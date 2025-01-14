@@ -1,6 +1,8 @@
 import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Orders: React.FC = () => {
+  const navigate = useNavigate();
   const orderItems = [
     {
       title: "Guitar Tuning",
@@ -32,7 +34,7 @@ const Orders: React.FC = () => {
         <div className="mt-4 p-6 rounded-lg lg:mt-24 lg:mb-10 shadow-md max-w-4xl w-full bg-white dark:bg-gray-800">
           {/* Header */}
           <div className="flex items-center mb-6">
-            <FaArrowLeft className="mr-2 text-blue-700" />
+            <FaArrowLeft className="mr-2 text-blue-700" onClick={() => navigate("/user/list-service")}  />
             <h1 className="text-xl font-bold text-zinc-800 dark:text-white">Your Orders</h1>
           </div>
 

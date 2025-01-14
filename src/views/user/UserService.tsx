@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link, useNavigate } from "react-router-dom"; // Import Link from react-router-dom
 
 // Definisikan tipe data Service
 type Service = {
@@ -18,6 +18,7 @@ const UserService = () => {
   const [services, setServices] = useState<Service[]>([]); // State untuk menyimpan layanan
   const [loading, setLoading] = useState(true); // State untuk status loading
   const [error, setError] = useState<string | null>(null); // State untuk error
+  const navigate = useNavigate();
 
   // Fungsi untuk mengambil data services
   const fetchServices = async () => {
@@ -90,11 +91,12 @@ const UserService = () => {
   }, []);
 
   return (
+    
     <>
       <div className="flex justify-center bg-slate-100 items-center px-4 py-6 dark:bg-gray-900">
         <div className="mt-4 p-6 rounded-lg lg:mt-24 lg:mb-10 shadow-md max-w-4xl w-full bg-white dark:bg-gray-800">
           <div className="flex items-center mb-6">
-            <FaArrowLeft className="mr-2 text-blue-700" />
+            <FaArrowLeft className="mr-2 text-blue-700" onClick={() => navigate("/user/list-service")} />
             <h1 className="text-xl font-bold text-zinc-800 dark:text-white">Your Services</h1>
           </div>
 

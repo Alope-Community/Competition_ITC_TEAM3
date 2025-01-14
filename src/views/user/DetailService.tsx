@@ -67,7 +67,10 @@ const DetailService: React.FC = () => {
         <div className="w-full md:w-2/3 max-w-6xl bg-white rounded-lg p-6 md:flex gap-6 shadow-lg dark:bg-gray-800">
           <div className="md:w-1/6">
             <div className="flex items-center mb-4">
-              <FaArrowLeft className="mr-2" />
+              <FaArrowLeft
+                className="mr-2"
+                onClick={() => navigate("/user/list-service")}
+              />
               <h1 className="text-2xl font-bold dark:text-white">Detail</h1>
             </div>
           </div>
@@ -81,11 +84,15 @@ const DetailService: React.FC = () => {
               className="w-full h-auto max-h-100 object-cover rounded-lg"
             />
             <div className="mt-4">
-              <h2 className="text-xl font-semibold dark:text-white">Nama Jasa</h2>
+              <h2 className="text-xl font-semibold dark:text-white">
+                Nama Jasa
+              </h2>
               <TextField type="text" value={detailService.title} readOnly />
             </div>
             <div className="mt-4">
-              <h3 className="text-lg font-medium dark:text-white">Nama Penyedia</h3>
+              <h3 className="text-lg font-medium dark:text-white">
+                Nama Penyedia
+              </h3>
               <TextField
                 type="text"
                 value={detailService.user?.name || "N/A"}
@@ -109,7 +116,9 @@ const DetailService: React.FC = () => {
               />
             </div>
             <div className="mt-4">
-              <h3 className="text-lg font-medium dark:text-white">Description</h3>
+              <h3 className="text-lg font-medium dark:text-white">
+                Description
+              </h3>
               <TextArea
                 rows={6}
                 value={detailService.description || "No description available."}
@@ -136,7 +145,6 @@ const DetailService: React.FC = () => {
           </button>
         </div>
       </div>
-
     </>
   );
 };

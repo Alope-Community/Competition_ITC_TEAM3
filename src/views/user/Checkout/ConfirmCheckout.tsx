@@ -27,11 +27,11 @@ const ConfirmStep: React.FC<ConfirmStepProps> = ({
   const { loading } = usePayment();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-10">
+    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-10 dark:bg-boxdark">
       <div className="text-center mb-8">
         <img src={OnPayment} alt="Purchase Illustration" className="mx-auto" />
-        <h1 className="text-2xl font-bold text-gray-800">Pay Now</h1>
-        <p className="text-gray-500">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Pay Now</h1>
+        <p className="text-gray-500 dark:text-white">
           You can choose all method payment with midtrans
         </p>
       </div>
@@ -40,53 +40,54 @@ const ConfirmStep: React.FC<ConfirmStepProps> = ({
           <div className="text-left">
             <div className="flex items-start gap-2">
               <span className="text-indigo-500">👤</span>
-              <p className="font-medium text-gray-700">Buyer</p>
+              <p className="font-medium text-gray-700 dark:text-white">Buyer</p>
             </div>
-            <p className="text-gray-600">{user.name}</p>
+            <p className="text-gray-600 dark:text-white">{user.name}</p>
           </div>
           <div className="text-left">
             <div className="flex items-start gap-2">
               <span className="text-purple-500">👤</span>
-              <p className="font-medium text-gray-700">Customer</p>
+              <p className="font-medium text-gray-700 dark:text-white">Customer</p>
             </div>
-            <p className="text-gray-600">{user?.name}</p>
+            <p className="text-gray-600 dark:text-white">{user?.name}</p>
           </div>
           <div className="text-left">
             <div className="flex items-start gap-2">
               <span className="text-indigo-500">📅</span>
-              <p className="font-medium text-gray-700">Date</p>
+              <p className="font-medium text-gray-700 dark:text-white">Date</p>
             </div>
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-white
+            ">
               {new Date(selectedDate).toLocaleDateString("id-ID")}
             </p>
           </div>
           <div className="text-left">
             <div className="flex items-start gap-2">
               <span className="text-blue-500">🔢</span>
-              <p className="font-medium text-gray-700">Order ID</p>
+              <p className="font-medium text-gray-700 dark:text-white">Order ID</p>
             </div>
-            <p className="text-gray-600 text-nowrap">{order_id}</p>
+            <p className="text-gray-600 text-nowrap dark:text-white">{order_id}</p>
           </div>
           <div className="text-left">
             <div className="flex items-start gap-2">
-              <span className="text-blue-500">💵</span>
-              <p className="font-medium text-gray-700">Fee</p>
+              <span className="text-blue-500 dark:text-white">💵</span>
+              <p className="font-medium text-gray-700 dark:text-white">Fee</p>
             </div>
-            <p className="text-gray-600">{fee}</p>
-          </div>
-          <div className="text-left">
-            <div className="flex items-start gap-2">
-              <span className="text-green-500">💵</span>
-              <p className="font-medium text-gray-700">Service Price</p>
-            </div>
-            <p className="text-xl font-bold text-gray-800">Rp {servicePrice}</p>
+            <p className="text-gray-600 dark:text-white">{fee}</p>
           </div>
           <div className="text-left">
             <div className="flex items-start gap-2">
               <span className="text-green-500">💵</span>
-              <p className="font-medium text-gray-700">Total Price</p>
+              <p className="font-medium text-gray-700 dark:text-white">Service Price</p>
             </div>
-            <p className="text-xl font-bold text-gray-800">Rp {totalPrice}</p>
+            <p className="text-xl font-bold text-gray-800 dark:text-white">Rp {servicePrice}</p>
+          </div>
+          <div className="text-left">
+            <div className="flex items-start gap-2">
+              <span className="text-green-500">💵</span>
+              <p className="font-medium text-gray-700 dark:text-white">Total Price</p>
+            </div>
+            <p className="text-xl font-bold text-gray-800 dark:text-white">Rp {totalPrice}</p>
           </div>
         </div>
       </div>

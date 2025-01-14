@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import AuthLayout from "../layout/AuthLayout";
 import { useAuth } from "../hooks/useAuth";
+import { NotificationProvider } from "../context/NotificationContext";
 
 const AuthRoute: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -9,9 +10,11 @@ const AuthRoute: React.FC = () => {
   return isAuthenticated ? (
     <Navigate to="/user/list-service" />
   ) : (
-    <AuthLayout>
-      <Outlet />
-    </AuthLayout>
+    <NotificationProvider>
+      <AuthLayout>
+        <Outlet />
+      </AuthLayout>
+    </NotificationProvider>
   );
 };
 

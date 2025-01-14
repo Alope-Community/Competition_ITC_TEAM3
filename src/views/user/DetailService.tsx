@@ -1,22 +1,38 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import TextField from "../../components/Forms/TextField/TextField";
 import TextArea from "../../components/Forms/TextArea/TextArea";
-import { useService } from "../../hooks/useService";
 import DatePickerOne from "../../components/Forms/DatePicker/DatePickerOne";
+import { useServiceContext } from "../../context/ServiceContext";
+import { useNotificationContext } from "../../context/NotificationContext";
 
 const DetailService: React.FC = () => {
+  const { showAlert } = useNotificationContext();
   const { id } = useParams<{ id: string }>();
-  const { detailService, loading, error, getServiceDetail } = useService();
+  const { detailService, getServiceDetail, loading, error } =
+    useServiceContext();
   const navigate = useNavigate();
-
 
   const numericId = Number(id);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    getServiceDetail(numericId);
+  }, []);
+
   const handleDateChange = (date: Date | null) => {
     if (date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (date < today) {
+        showAlert(
+          "Selected date has already passed. Please choose a valid date.",
+          "error"
+        );
+        setSelectedDate(null);
+        return;
+      }
       const formattedDate = date.toISOString();
       setSelectedDate(formattedDate);
       console.log("Selected date:", formattedDate);
@@ -25,12 +41,6 @@ const DetailService: React.FC = () => {
       console.log("No date selected");
     }
   };
-
-  useEffect(() => {
-    if (id) {
-      getServiceDetail(numericId);
-    }
-  }, [id]);
 
   const handleCheckout = () => {
     if (selectedDate) {
@@ -41,7 +51,10 @@ const DetailService: React.FC = () => {
         },
       });
     } else {
-      alert("Please select a date before proceeding to checkout.");
+      showAlert(
+        "Please select a date before proceeding to checkout.",
+        "warning"
+      );
     }
   };
 

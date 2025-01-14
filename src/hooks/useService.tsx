@@ -87,7 +87,7 @@ export const useService = () => {
       const response = await updateService(id, data);
       if (response?.data) {
         setSuccess("Service updated successfully.");
-        getAllService(); // Refresh list after update
+        getAllService();
       }
     } catch (err) {
       const apiError = err as ApiError;
@@ -103,7 +103,7 @@ export const useService = () => {
     try {
       await deleteService(id);
       setSuccess("Service deleted successfully.");
-      getAllService(); // Refresh list after deletion
+      getAllService();
     } catch (err) {
       const apiError = err as ApiError;
       setError(apiError.response?.data?.message || "Failed to delete service.");

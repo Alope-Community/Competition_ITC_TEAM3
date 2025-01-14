@@ -1,139 +1,145 @@
 import React, { useState, useEffect } from "react";
+import indonesiaData from "../../../assets/location/indonesia_data.json";
 
-const SelectLocation: React.FC = () => {
-  const [provinsi, setProvinsi] = useState([]);
-  const [kabupaten, setKabupaten] = useState([]);
-  const [kecamatan, setKecamatan] = useState([]);
-  const [kelurahan, setKelurahan] = useState([]);
+type Provinsi = { id: string; nama: string };
+type Kabupaten = { id: string; nama: string };
+type Kecamatan = { id: string; nama: string };
+type Kelurahan = { id: string; nama: string };
+
+type IndonesiaData = {
+  provinsi: Provinsi[];
+  kabupaten: Record<string, Kabupaten[]>;
+  kecamatan: Record<string, Kecamatan[]>;
+  kelurahan: Record<string, Kelurahan[]>;
+};
+type SelectLocationProps = {
+  onLocationChange: (location: string) => void;
+};
+
+const SelectLocation: React.FC<SelectLocationProps> = ({
+  onLocationChange,
+}) => {
+  const data: IndonesiaData = indonesiaData as IndonesiaData;
+
+  const [provinsi, setProvinsi] = useState<Provinsi[]>([]);
+  const [kabupaten, setKabupaten] = useState<Kabupaten[]>([]);
+  const [kecamatan, setKecamatan] = useState<Kecamatan[]>([]);
+  const [kelurahan, setKelurahan] = useState<Kelurahan[]>([]);
+
   const [selectedProvinsi, setSelectedProvinsi] = useState<string>("");
   const [selectedKabupaten, setSelectedKabupaten] = useState<string>("");
   const [selectedKecamatan, setSelectedKecamatan] = useState<string>("");
   const [selectedKelurahan, setSelectedKelurahan] = useState<string>("");
-  const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
-
-  const changeTextColor = () => {
-    setIsOptionSelected(true);
-  };
 
   useEffect(() => {
-    fetch("https://ibnux.github.io/data-indonesia/provinsi.json")
-      .then((res) => res.json())
-      .then((data) => setProvinsi(data));
+    setProvinsi(data.provinsi);
   }, []);
 
-  const loadKabupaten = (provinsiId: string) => {
-    fetch(`https://ibnux.github.io/data-indonesia/kabupaten/${provinsiId}.json`)
-      .then((res) => res.json())
-      .then((data) => setKabupaten(data));
+  useEffect(() => {
+    onLocationChange(
+      `${selectedProvinsi}, ${selectedKabupaten}, ${selectedKecamatan}, ${selectedKelurahan}`
+    );
+  }, []);
+
+  const handleProvinsiChange = (provinsiId: string) => {
+    setSelectedProvinsi(provinsiId);
+    setKabupaten(data.kabupaten[provinsiId] || []);
+    setKecamatan([]);
+    setKelurahan([]);
+    setSelectedKabupaten("");
+    setSelectedKecamatan("");
+    setSelectedKelurahan("");
   };
 
-  const loadKecamatan = (kabupatenId: string) => {
-    fetch(
-      `https://ibnux.github.io/data-indonesia/kecamatan/${kabupatenId}.json`
-    )
-      .then((res) => res.json())
-      .then((data) => setKecamatan(data));
+  const handleKabupatenChange = (kabupatenId: string) => {
+    setSelectedKabupaten(kabupatenId);
+    setKecamatan(data.kecamatan[kabupatenId] || []);
+    setKelurahan([]);
+    setSelectedKecamatan("");
+    setSelectedKelurahan("");
   };
 
-  const loadKelurahan = (kecamatanId: string) => {
-    fetch(
-      `https://ibnux.github.io/data-indonesia/kelurahan/${kecamatanId}.json`
-    )
-      .then((res) => res.json())
-      .then((data) => setKelurahan(data));
+  const handleKecamatanChange = (kecamatanId: string) => {
+    setSelectedKecamatan(kecamatanId);
+    setKelurahan(data.kelurahan[kecamatanId] || []);
+    setSelectedKelurahan("");
+  };
+
+  const handleKelurahanChange = (kelurahanId: string) => {
+    setSelectedKelurahan(kelurahanId);
   };
 
   return (
-    <div>
-      <div className="">
-        <label className="mb-2.5 block font-medium text-black dark:text-white">
+    <div className="">
+      {/* Provinsi */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
           Provinsi
         </label>
         <select
           value={selectedProvinsi}
-          onChange={(e) => {
-            setSelectedProvinsi(e.target.value);
-            loadKabupaten(e.target.value);
-            changeTextColor();
-          }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-            isOptionSelected ? "text-black dark:text-white" : ""
-          }`}
+          onChange={(e) => handleProvinsiChange(e.target.value)}
+          className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">- Pilih Provinsi -</option>
-          {provinsi.map((item: any) => (
+          {provinsi.map((item) => (
             <option key={item.id} value={item.id}>
               {item.nama}
             </option>
           ))}
         </select>
       </div>
-      <br />
-      <div className="">
-        <label className="mb-2.5 block font-medium text-black dark:text-white">
+
+      {/* Kabupaten */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
           Kabupaten
         </label>
-
         <select
           value={selectedKabupaten}
-          onChange={(e) => {
-            setSelectedKabupaten(e.target.value);
-            loadKecamatan(e.target.value);
-            changeTextColor();
-          }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-            isOptionSelected ? "text-black dark:text-white" : ""
-          }`}
+          onChange={(e) => handleKabupatenChange(e.target.value)}
+          className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">- Pilih Kabupaten -</option>
-          {kabupaten.map((item: any) => (
+          {kabupaten.map((item) => (
             <option key={item.id} value={item.id}>
               {item.nama}
             </option>
           ))}
         </select>
       </div>
-      <br />
-      <div className="">
-        <label className="mb-2.5 block font-medium text-black dark:text-white">
+
+      {/* Kecamatan */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
           Kecamatan
         </label>
         <select
           value={selectedKecamatan}
-          onChange={(e) => {
-            setSelectedKecamatan(e.target.value);
-            loadKelurahan(e.target.value);
-            changeTextColor();
-          }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-            isOptionSelected ? "text-black dark:text-white" : ""
-          }`}
+          onChange={(e) => handleKecamatanChange(e.target.value)}
+          className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">- Pilih Kecamatan -</option>
-          {kecamatan.map((item: any) => (
+          {kecamatan.map((item) => (
             <option key={item.id} value={item.id}>
               {item.nama}
             </option>
           ))}
         </select>
       </div>
-      <br />
-      <div className="">
-        <label className="mb-2.5 block font-medium text-black dark:text-white">
+
+      {/* Kelurahan */}
+      <div className="mb-4">
+        <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
           Kelurahan
         </label>
         <select
           value={selectedKelurahan}
-          onChange={(e) => {
-            setSelectedKelurahan(e.target.value);
-            changeTextColor();
-          }}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-12 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-            isOptionSelected ? "text-black dark:text-white" : ""
-          }`}
+          onChange={(e) => handleKelurahanChange(e.target.value)}
+          className="w-full px-3 py-2 border rounded-lg text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">- Pilih Kelurahan -</option>
-          {kelurahan.map((item: any) => (
+          {kelurahan.map((item) => (
             <option key={item.id} value={item.id}>
               {item.nama}
             </option>

@@ -16,6 +16,7 @@ export interface Service {
 export interface User {
   name: string;
   address: string;
+  phone_number: string;
 }
 
 export interface Category {

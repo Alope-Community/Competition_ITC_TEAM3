@@ -3,7 +3,7 @@ import { MessageProps } from "../../types/message";
 
 const SuccessAlerts: React.FC<MessageProps> = ({ tittle, message }) => {
   return (
-    <div className="absolute top-4 right-4 flex w-[300px] border-l-4 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-4 py-3 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30">
+    <div className="absolute top-4 right-4 z-99999 flex w-[300px] border-l-4 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-4 py-3 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30">
       <div className="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-[#34D399]">
         <svg
           width="16"

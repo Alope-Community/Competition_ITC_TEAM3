@@ -21,24 +21,25 @@ export interface SnapTokenResponse {
 }
 
 export interface PaymentResult {
-  id: number;
-  message: string;
+  success: {
+    message: string;
+    payment_id: number;
+    order_id: number;
+  };
 }
 
 export interface TransactionResult {
   order_id: string;
-  status_code: string;
   transaction_status: string;
   payment_type: string;
   gross_amount: string;
-  va_numbers: {
-    bank: string;
-    va_number: string;
-  }[];
+  va_bank: string;
+  va_number: string;
   fraud_status: string;
   transaction_time: string;
   user_id: number;
   service_id: number;
+  order_date: string;
 }
 
 export const getSnapToken = async (
@@ -54,9 +55,16 @@ export const getSnapToken = async (
 export const sendTransactionResult = async (
   transaction: TransactionResult
 ): Promise<PaymentResult> => {
-  const response = await axiosInstance.post<PaymentResult>(
-    "/users/payment/result",
-    { transaction }
-  );
-  return response.data;
+  try {
+    const response = await axiosInstance.post<PaymentResult>(
+      "/users/payment/result",
+      transaction
+    );
+
+    console.log("Parsed PaymentResult:", response.data);
+    return response.data;
+  } catch (err) {
+    console.error("Error in sendTransactionResult:", err);
+    throw err;
+  }
 };

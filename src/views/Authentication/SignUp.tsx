@@ -4,14 +4,14 @@ import LogoDark from "../../assets/images/logo/logo-dark.png";
 import Logo from "../../assets/images/logo/logo-icon.png";
 import TextField from "../../components/Forms/TextField/TextField";
 import { useAuth } from "../../hooks/useAuth";
-import SuccessAlerts from "../../components/Alerts/SuccessAlerts";
-import ErrorAlerts from "../../components/Alerts/FailedAlerts";
-import WarningAlerts from "../../components/Alerts/WarningAlerts";
 import SelectLocation from "../../components/Forms/SelectGroup/SelectLocation";
 import { LuLockKeyhole } from "react-icons/lu";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { FaPhoneFlip } from "react-icons/fa6";
+import SuccessAlerts from "../../components/Alerts/SuccessAlerts";
+import WarningAlerts from "../../components/Alerts/WarningAlerts";
+import FailedAlerts from "../../components/Alerts/FailedAlerts";
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -137,7 +137,6 @@ const SignUp: React.FC = () => {
         address: formData.address,
         role: formData.role,
       });
-
       if (loading) {
         showAlert("Registering, please wait...", "warning");
       } else if (success) {
@@ -150,13 +149,20 @@ const SignUp: React.FC = () => {
     }
   };
 
+  const handleLocationChange = (location: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      address: location,
+    }));
+  };
+
   return (
     <div className="relative">
       {alertType === "success" && alertMessage && (
         <SuccessAlerts tittle="Success" message={alertMessage} />
       )}
       {alertType === "error" && alertMessage && (
-        <ErrorAlerts tittle="Error" message={alertMessage} />
+        <FailedAlerts tittle="Error" message={alertMessage} />
       )}
       {alertType === "warning" && alertMessage && (
         <WarningAlerts tittle="Warning" message={alertMessage} />
@@ -293,7 +299,7 @@ const SignUp: React.FC = () => {
                       </label>
                       <div className="relative">
                         <TextField
-                          type="text"
+                          type="number"
                           placeholder="Enter your phone number"
                           name="phoneNumber"
                           value={formData.phoneNumber}
@@ -311,7 +317,7 @@ const SignUp: React.FC = () => {
                     </div>
 
                     <div className="mb-4">
-                      <SelectLocation />
+                      <SelectLocation onLocationChange={handleLocationChange} />
                       {errors.address && (
                         <span className="text-red-500">{errors.address}</span>
                       )}

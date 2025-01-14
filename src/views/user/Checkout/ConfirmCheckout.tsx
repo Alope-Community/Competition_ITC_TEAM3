@@ -65,7 +65,7 @@ const ConfirmStep: React.FC<ConfirmStepProps> = ({
               <span className="text-blue-500">🔢</span>
               <p className="font-medium text-gray-700">Order ID</p>
             </div>
-            <p className="text-gray-600 text-nowrap">{order_id}</p>
+            <p className="text-gray-600 md:text-nowrap">{order_id}</p>
           </div>
           <div className="text-left">
             <div className="flex items-start gap-2">

@@ -9,12 +9,17 @@ interface CompleteStepProps {
   user: User;
   result: TransactionResult;
   selectedDate: string;
+  totalPrice: number;
+  order_id: string;
 }
 
 const CompleteStep: React.FC<CompleteStepProps> = ({
   user,
   detailService,
   result,
+  selectedDate,
+  totalPrice,
+  order_id,
 }) => {
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -37,41 +42,52 @@ const CompleteStep: React.FC<CompleteStepProps> = ({
                 <span className="text-indigo-500">📅</span>
                 <p className="font-medium text-gray-700">Date</p>
               </div>
-              <p className="text-gray-600">27/04/2022</p>
+              <p className="text-gray-600">
+                {new Date(selectedDate).toLocaleDateString("id-ID")}
+              </p>
             </div>
             <div>
               <div className="flex items-start gap-2">
                 <span className="text-indigo-500">👤</span>
                 <p className="font-medium text-gray-700">Customer</p>
               </div>
-              <p className="text-gray-600">John Miller</p>
+              <p className="text-gray-600">{user.name}</p>
             </div>
             <div>
               <div className="flex items-start gap-2">
                 <span className="text-indigo-500">💳</span>
                 <p className="font-medium text-gray-700">Payment Method</p>
               </div>
-              <p className="text-gray-600">VISA</p>
+              <p className="text-gray-600">{result.payment_type}</p>
             </div>
             <div>
               <div className="flex items-start gap-2">
                 <span className="text-indigo-500">🔢</span>
-                <p className="font-medium text-gray-700">Order Number</p>
+                <p className="font-medium text-gray-700 md:text-nowrap">
+                  Order Number
+                </p>
               </div>
-              <p className="text-gray-600">586789963</p>
+              <p className="text-gray-600 md:text-nowrap">{order_id}</p>
             </div>
             <div className="col-span-2">
               <div className="flex items-start gap-2">
                 <span className="text-indigo-500">💵</span>
                 <p className="font-medium text-gray-700">Total</p>
               </div>
-              <p className="text-xl font-bold text-gray-800">$273</p>
+              <p className="text-xl font-bold text-gray-800">{totalPrice}</p>
             </div>
           </div>
         </div>
-        <button className="bg-primary text-white py-2 px-6 rounded-lg">
-          Go To Whatsapp
-        </button>
+        <div className="flex justify-center mt-4">
+          <a
+            href={`https://wa.me/${detailService.user.phone_number}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-primary text-white py-2 px-6 rounded-lg"
+          >
+            Go To Whatsapp
+          </a>
+        </div>
       </div>
     </div>
   );

@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { useService } from "../../hooks/useService";
+import { useNavigate } from "react-router-dom";
 import { Service } from "../../models/Service";
+import { useServiceContext } from "../../context/ServiceContext";
+import indonesiaData from "../../../assets/location/indonesia_data.json";
+import { useAuth } from "../../hooks/useAuth";
 
 const ListService: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const itemsPerPage = 9;
 
-  const { services, loading, error, getAllService } = useService();
-  const navigate = useNavigate();
+  const { services, loading, error } = useServiceContext();
 
-  useEffect(() => {
-    getAllService();
-  }, []);
+  const { user, getUserData } = useAuth();
+
+  const navigate = useNavigate();
 
   const filteredItems = services.filter((item) =>
     item.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -35,6 +36,10 @@ const ListService: React.FC = () => {
     navigate(`/user/detail/${id}`);
   };
 
+  React.useEffect(() => {
+    getUserData();
+  }, [!user]);
+
   return (
     <>
       <div className="bg-slate-100 md:mt-2 min-h-screen pt-20 pb-6 px-4 md:px-6">
@@ -43,7 +48,6 @@ const ListService: React.FC = () => {
             All Service
           </h2>
 
-          {/* Search Bar */}
           <div className="mb-8">
             <div className="mb-4">
               <input
@@ -56,11 +60,9 @@ const ListService: React.FC = () => {
             </div>
           </div>
 
-          {/* Loading dan Error Handling */}
           {loading && <p className="text-center text-gray-600">Loading...</p>}
           {error && <p className="text-center text-red-600">{error}</p>}
 
-          {/* Grid List */}
           {!loading && !error && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {displayedItems.length > 0 ? (
@@ -98,7 +100,6 @@ const ListService: React.FC = () => {
             </div>
           )}
 
-          {/* Pagination */}
           <div className="flex justify-center mt-8 items-center">
             <ReactPaginate
               breakLabel="..."

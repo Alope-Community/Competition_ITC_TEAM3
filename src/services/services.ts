@@ -19,10 +19,18 @@ export const getDetailService = async (id: number): Promise<DetailService> => {
   return response.data;
 };
 
-export const createService = async (
-  data: Partial<Service>
-): Promise<DetailService> => {
-  const response = await axiosInstance.post<DetailService>("/service", data);
+export const createService = async (data: FormData): Promise<DetailService> => {
+  const response = await axiosInstance.post<DetailService>(
+    "/users/services",
+    data,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  console.log(response);
   return response.data;
 };
 
